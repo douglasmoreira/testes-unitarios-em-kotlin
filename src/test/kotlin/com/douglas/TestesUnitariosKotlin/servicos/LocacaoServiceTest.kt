@@ -9,6 +9,7 @@ import com.douglas.TestesUnitariosKotlin.utils.DataUtils.obterDataComDiferencaDi
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ErrorCollector
@@ -16,6 +17,13 @@ import org.junit.rules.ExpectedException
 import java.util.*
 
 class LocacaoServiceTest {
+
+    private lateinit var service: LocacaoService
+
+    @Before
+    fun setUp() {
+        service = LocacaoService()
+    }
 
     @get:Rule
 //    @Rule @JvmField // outra forma de anotar e tornar a Rule publica
@@ -27,12 +35,11 @@ class LocacaoServiceTest {
     @Test
     fun main() {
         //cenario
-        val service = LocacaoService()
         val usuario = Usuario("Usuario1")
         val filme = Filme("filme 1", 2, 5.0)
 
         //acão
-        val locacao = service.alugarFilme(usuario, filme)
+        val locacao = service?.alugarFilme(usuario, filme)
 
         //verificaçao
         Assert.assertTrue(locacao.valor == 5.0)
@@ -59,7 +66,6 @@ class LocacaoServiceTest {
     fun testLocacao_filmeSemEstoque()    {
 
         //cenario
-        val service = LocacaoService()
         val usuario = Usuario("Usuario1")
         val filme = Filme("filme 1", 0, 5.0)
 
@@ -72,7 +78,6 @@ class LocacaoServiceTest {
     fun testLocacao_filmeSemEstoque2() {
 
         //cenario
-        val service = LocacaoService()
         val usuario = Usuario("Usuario1")
         val filme = Filme("filme 1", 0, 5.0)
 
@@ -91,7 +96,6 @@ class LocacaoServiceTest {
     fun testLocacao_filmeSemEstoque3() {
 
         //cenario
-        val service = LocacaoService()
         val usuario = Usuario("Usuario1")
         val filme = Filme("filme 1", 0, 5.0)
 
@@ -108,7 +112,6 @@ class LocacaoServiceTest {
     fun testLocacao_usuarioVazio() {
 
         //cenario
-        val service = LocacaoService()
         val filme = Filme("filme 1", 1, 5.0)
 
         //acão
@@ -126,7 +129,6 @@ class LocacaoServiceTest {
     fun testLocacao_filmeVazio() {
 
         //cenario
-        val service = LocacaoService()
         val usuario = Usuario("Usuario1")
         expection.expect(LocadoraException::class.java)
         expection.expectMessage("Filme vazio")
