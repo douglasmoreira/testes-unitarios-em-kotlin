@@ -30,8 +30,16 @@ class LocacaoService {
         locacao.usuario = usuario
         locacao.dataLocacao = Date()
         var valorTotal = 0.0
-        for (filme in filmes) {
-            valorTotal += filme.precoLocacao!!
+        for (i in filmes.indices) {
+            val filme = filmes[i]
+            var valorFilme: Double = filme.precoLocacao!!
+            when (i) {
+                2 -> valorFilme = valorFilme * 0.75
+                3 -> valorFilme = valorFilme * 0.5
+                4 -> valorFilme = valorFilme * 0.25
+                5 -> valorFilme = 0.0
+            }
+            valorTotal += valorFilme
         }
         locacao.valor =valorTotal
 

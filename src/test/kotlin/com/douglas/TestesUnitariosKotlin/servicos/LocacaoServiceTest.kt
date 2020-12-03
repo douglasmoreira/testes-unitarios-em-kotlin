@@ -1,6 +1,7 @@
 package com.douglas.TestesUnitariosKotlin.servicos
 
 import com.douglas.TestesUnitariosKotlin.entidades.Filme
+import com.douglas.TestesUnitariosKotlin.entidades.Locacao
 import com.douglas.TestesUnitariosKotlin.entidades.Usuario
 import com.douglas.TestesUnitariosKotlin.exception.FilmeSemEstoqueException
 import com.douglas.TestesUnitariosKotlin.exception.LocadoraException
@@ -34,7 +35,7 @@ class LocacaoServiceTest {
     var expection = ExpectedException.none()
 
     @Test
-    fun main() {
+    fun deveAlugarFilme() {
         //cenario
         val usuario = Usuario("Usuario1")
         val filme = asList(Filme("filme 1", 2, 5.0))
@@ -64,7 +65,7 @@ class LocacaoServiceTest {
 
 //   forma elegante
     @Test(expected = FilmeSemEstoqueException::class)
-    fun testLocacao_filmeSemEstoque()    {
+    fun deveLancarExcecaoAoAlugarFilmeSemEstoque()    {
 
         //cenario
         val usuario = Usuario("Usuario1")
@@ -76,7 +77,7 @@ class LocacaoServiceTest {
 
 //    forma robusta
     @Test
-    fun testLocacao_filmeSemEstoque2() {
+    fun deveLancarExcecaoAoAlugarFilmeSemEstoque2() {
 
         //cenario
         val usuario = Usuario("Usuario1")
@@ -94,7 +95,7 @@ class LocacaoServiceTest {
 //    forma nova
     @Test
     @Throws(FilmeSemEstoqueException::class)
-    fun testLocacao_filmeSemEstoque3() {
+    fun deveLancarExcecaoAoAlugarFilmeSemEstoque3() {
 
         //cenario
         val usuario = Usuario("Usuario1")
@@ -110,7 +111,7 @@ class LocacaoServiceTest {
 //    forma robusta
     @Test
     @Throws(FilmeSemEstoqueException::class)
-    fun testLocacao_usuarioVazio() {
+    fun naoDeveAlugarFilmeSemUsuario() {
 
         //cenario
         val filme = asList(Filme("filme 1", 1, 5.0))
@@ -127,7 +128,7 @@ class LocacaoServiceTest {
 //    forma nova
     @Test
     @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
-    fun testLocacao_filmeVazio() {
+    fun naoDeveAlugarFilmeSemFilme() {
 
         //cenario
         val usuario = Usuario("Usuario1")
@@ -136,5 +137,87 @@ class LocacaoServiceTest {
 
         //acão
         service.alugarFilme(usuario, null)
+    }
+
+    @Test
+    @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
+    fun devePagar75PctNoFilme3() {
+
+        //cenario
+        val usuario = Usuario("Usuario1")
+        val filmes = asList(
+            Filme("filme 1", 1, 4.0),
+            Filme("filme 2", 1, 4.0),
+            Filme("filme 3", 1, 4.0)
+        )
+
+        //acão
+        val resultado: Locacao = service.alugarFilme(usuario, filmes)
+
+        //verificaçao
+        Assert.assertThat(resultado.valor, `is`(11.0))
+    }
+
+    @Test
+    @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
+    fun devePagar50PctNoFilme4() {
+
+        //cenario
+        val usuario = Usuario("Usuario1")
+        val filmes = asList(
+            Filme("filme 1", 1, 4.0),
+            Filme("filme 2", 1, 4.0),
+            Filme("filme 3", 1, 4.0),
+            Filme("filme 4", 1, 4.0)
+        )
+
+        //acão
+        val resultado: Locacao = service.alugarFilme(usuario, filmes)
+
+        //verificaçao
+        Assert.assertThat(resultado.valor, `is`(13.0))
+    }
+
+    @Test
+    @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
+    fun devePagar25PctNoFilme5() {
+
+        //cenario
+        val usuario = Usuario("Usuario1")
+        val filmes = asList(
+            Filme("filme 1", 1, 4.0),
+            Filme("filme 2", 1, 4.0),
+            Filme("filme 3", 1, 4.0),
+            Filme("filme 4", 1, 4.0),
+            Filme("filme 5", 1, 4.0)
+        )
+
+        //acão
+        val resultado: Locacao = service.alugarFilme(usuario, filmes)
+
+        //verificaçao
+        Assert.assertThat(resultado.valor, `is`(14.0))
+    }
+
+    @Test
+    @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
+    fun devePagar0PctNoFilme6() {
+
+        //cenario
+        val usuario = Usuario("Usuario1")
+        val filmes = asList(
+            Filme("filme 1", 1, 4.0),
+            Filme("filme 2", 1, 4.0),
+            Filme("filme 3", 1, 4.0),
+            Filme("filme 4", 1, 4.0),
+            Filme("filme 5", 1, 4.0),
+            Filme("filme 6", 1, 4.0)
+        )
+
+        //acão
+        val resultado: Locacao = service.alugarFilme(usuario, filmes)
+
+        //verificaçao
+        Assert.assertThat(resultado.valor, `is`(14.0))
     }
 }
