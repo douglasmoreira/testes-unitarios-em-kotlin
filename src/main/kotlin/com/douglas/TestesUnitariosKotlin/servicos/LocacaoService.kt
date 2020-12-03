@@ -9,25 +9,31 @@ import com.douglas.TestesUnitariosKotlin.utils.DataUtils.adicionarDias
 import java.util.*
 
 class LocacaoService {
-    fun alugarFilme(usuario: Usuario?, filme: Filme?): Locacao {
+    fun alugarFilme(usuario: Usuario?, filmes: List<Filme>?): Locacao {
 
         if (usuario == null) {
             throw LocadoraException("Usuário vazio")
         }
 
-        if (filme == null) {
+        if (filmes == null) {
             throw LocadoraException("Filme vazio")
         }
 
-        if (filme.estoque === 0) {
-            throw FilmeSemEstoqueException("Filme sem estoque")
+        for (filme in filmes) {
+            if (filme.estoque === 0) {
+                throw FilmeSemEstoqueException("Filme sem estoque")
+            }
         }
 
         val locacao = Locacao()
-        locacao.filme = filme
+        locacao.filmes = filmes
         locacao.usuario = usuario
         locacao.dataLocacao = Date()
-        locacao.valor = filme.precoLocacao
+        var valorTotal = 0.0
+        for (filme in filmes) {
+            valorTotal += filme.precoLocacao!!
+        }
+        locacao.valor =valorTotal
 
         //Entrega no dia seguinte
         var dataEntrega: Date? = Date()

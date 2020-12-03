@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.rules.ErrorCollector
 import org.junit.rules.ExpectedException
 import java.util.*
+import java.util.Arrays.asList
 
 class LocacaoServiceTest {
 
@@ -36,7 +37,7 @@ class LocacaoServiceTest {
     fun main() {
         //cenario
         val usuario = Usuario("Usuario1")
-        val filme = Filme("filme 1", 2, 5.0)
+        val filme = asList(Filme("filme 1", 2, 5.0))
 
         //acão
         val locacao = service?.alugarFilme(usuario, filme)
@@ -67,7 +68,7 @@ class LocacaoServiceTest {
 
         //cenario
         val usuario = Usuario("Usuario1")
-        val filme = Filme("filme 1", 0, 5.0)
+        val filme = asList(Filme("filme 1", 0, 5.0))
 
         //acão
         service.alugarFilme(usuario, filme)
@@ -79,7 +80,7 @@ class LocacaoServiceTest {
 
         //cenario
         val usuario = Usuario("Usuario1")
-        val filme = Filme("filme 1", 0, 5.0)
+        val filme = asList(Filme("filme 1", 0, 5.0))
 
         //acão
         try {
@@ -97,7 +98,7 @@ class LocacaoServiceTest {
 
         //cenario
         val usuario = Usuario("Usuario1")
-        val filme = Filme("filme 1", 0, 5.0)
+        val filme = asList(Filme("filme 1", 0, 5.0))
 
         expection.expect(java.lang.Exception::class.java)
         expection.expectMessage("Filme sem estoque")
@@ -112,7 +113,7 @@ class LocacaoServiceTest {
     fun testLocacao_usuarioVazio() {
 
         //cenario
-        val filme = Filme("filme 1", 1, 5.0)
+        val filme = asList(Filme("filme 1", 1, 5.0))
 
         //acão
         try {
