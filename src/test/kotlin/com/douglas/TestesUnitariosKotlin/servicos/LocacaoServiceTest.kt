@@ -5,14 +5,12 @@ import com.douglas.TestesUnitariosKotlin.entidades.Locacao
 import com.douglas.TestesUnitariosKotlin.entidades.Usuario
 import com.douglas.TestesUnitariosKotlin.exception.FilmeSemEstoqueException
 import com.douglas.TestesUnitariosKotlin.exception.LocadoraException
+import com.douglas.TestesUnitariosKotlin.utils.DataUtils
 import com.douglas.TestesUnitariosKotlin.utils.DataUtils.isMesmaData
 import com.douglas.TestesUnitariosKotlin.utils.DataUtils.obterDataComDiferencaDias
 import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.*
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.rules.ErrorCollector
 import org.junit.rules.ExpectedException
 import java.util.*
@@ -35,7 +33,12 @@ class LocacaoServiceTest {
     var expection = ExpectedException.none()
 
     @Test
+//    @Ignore // caso precise ignorar o teste
     fun deveAlugarFilme() {
+
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(Date(), Calendar.SATURDAY))
+
+
         //cenario
         val usuario = Usuario("Usuario1")
         val filme = asList(Filme("filme 1", 2, 5.0))
@@ -219,5 +222,22 @@ class LocacaoServiceTest {
 
         //verificaçao
         Assert.assertThat(resultado.valor, `is`(14.0))
+    }
+
+    @Test
+    @Throws(FilmeSemEstoqueException::class, LocadoraException::class)
+    fun naoDeveDevolverFilmeNoDomingo() {
+        Assume.assumeTrue(DataUtils.verificarDiaSemana(Date(), Calendar.SATURDAY))
+
+        //cenario
+        val usuario = Usuario("Usuario1")
+        val filmes = asList(Filme("filme 1", 1, 4.0))
+
+        //acão
+        val resultado = service.alugarFilme(usuario, filmes)
+
+        //verificaçao
+        val ehSegunda: Boolean = DataUtils.verificarDiaSemana(resultado.dataRetorno, Calendar.MONDAY)
+        Assert.assertTrue(ehSegunda)
     }
 }
