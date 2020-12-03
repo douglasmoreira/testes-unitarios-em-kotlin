@@ -5,6 +5,7 @@ import com.douglas.TestesUnitariosKotlin.entidades.Locacao
 import com.douglas.TestesUnitariosKotlin.entidades.Usuario
 import com.douglas.TestesUnitariosKotlin.exception.FilmeSemEstoqueException
 import com.douglas.TestesUnitariosKotlin.exception.LocadoraException
+import com.douglas.TestesUnitariosKotlin.utils.DataUtils
 import com.douglas.TestesUnitariosKotlin.utils.DataUtils.adicionarDias
 import java.util.*
 
@@ -45,6 +46,9 @@ class LocacaoService {
 
         //Entrega no dia seguinte
         var dataEntrega: Date? = Date()
+        if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SATURDAY)) {
+            dataEntrega = adicionarDias(dataEntrega, 1)
+        }
         dataEntrega = adicionarDias(dataEntrega, 1)
         locacao.dataRetorno = dataEntrega
 
